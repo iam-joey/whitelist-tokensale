@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-use anchor_spl::{associated_token::AssociatedToken, token::{Token, Transfer,transfer}, token_interface::{Mint,TokenAccount}};
+use anchor_spl::{associated_token::AssociatedToken, token::{transfer, Transfer}, token_interface::{Mint,TokenAccount, TokenInterface}};
 
 use crate::state::Pool;
 
@@ -29,25 +29,25 @@ pub struct ApproveBuy<'info>{
     )] 
     pub author_ata:InterfaceAccount<'info,TokenAccount>,
     pub associated_token_program: Program<'info, AssociatedToken>,
-    pub token_program:Program<'info,Token>
+    pub token_program:Interface<'info,TokenInterface>,
 }
 
 impl<'info> ApproveBuy<'info>{
-    pub fn make_it_buy(&mut self,amount:u64)->Result<()>{
+    pub fn make_it_buy(&mut self,tokens:u64)->Result<()>{
         self.pool_account.allow_buy().expect("Something went wrong in approve buy");
-        self.transfer_alloc_tokens_to_vault(amount)
+        self.transfer_alloc_tokens_to_vault(tokens)
     }
-    pub fn transfer_alloc_tokens_to_vault(&mut self,amount:u64)->Result<()>{
+    pub fn transfer_alloc_tokens_to_vault(&mut self,tokens:u64)->Result<()>{
 
-        let transfer_instruction=Transfer{
+        let accounts=Transfer{
             from:self.author_ata.to_account_info(),
             to:self.vault_tokens.to_account_info(),
             authority:self.author.to_account_info()
         };
 
-       let cpi_context= CpiContext::new(self.token_program.to_account_info(), transfer_instruction);
+       let cpi_context= CpiContext::new(self.token_program.to_account_info(), accounts);
 
-       transfer(cpi_context, amount)
+       transfer(cpi_context, tokens)
 
     }
 }

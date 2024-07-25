@@ -13,11 +13,15 @@ pub mod whitelist_token_sale {
     use super::*;
 
     pub fn initialize(ctx: Context<InitializePool>,allocation:u64,start:i64,end:i64,price:u64) -> Result<()> {
-        ctx.accounts.handler(allocation, start, end, price,ctx.bumps.pool_account)
+        ctx.accounts.handler(allocation, start, end, price,ctx.bumps.pool_account,ctx.bumps.sol_vault)
     }
 
     pub fn delete_pool(ctx:Context<DeletePool>)->Result<()>{
         ctx.accounts.delete_pool()
+    }
+
+    pub fn close_pool(ctx:Context<ClosePool>)->Result<()>{
+        ctx.accounts.stop_pool()
     }
 
     pub fn join_whitelist(ctx:Context<JoinWhitelist>)->Result<()>{
@@ -36,6 +40,18 @@ pub mod whitelist_token_sale {
         ctx.accounts.make_it_buy(amount)
     }
 
+    pub fn buy_tokens(ctx:Context<BuyToken>,tokens:u64)->Result<()>{
+        ctx.accounts.handler(tokens)
+    }
+    
+    pub fn transfer_remaining_tokens(ctx:Context<TakeBackTokens>)->Result<()>{
+
+        ctx.accounts.handle_it()
+    }
+
+    pub fn withdraw_sol(ctx:Context<WithdrawSol>)->Result<()>{
+        ctx.accounts.handle_it()
+    }
 
 }
 
