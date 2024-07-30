@@ -1,5 +1,6 @@
-use crate::state::Pool;
 use anchor_lang::prelude::*;
+
+use crate::state::Pool;
 
 use anchor_spl::{
     associated_token::AssociatedToken,
@@ -10,6 +11,7 @@ use anchor_spl::{
 pub struct InitializePool<'info> {
     #[account(mut)]
     pub author: Signer<'info>,
+
     #[account(
         init,
         payer=author,
@@ -18,7 +20,6 @@ pub struct InitializePool<'info> {
         bump
     )]
     pub pool_account: Account<'info, Pool>,
-    pub token_mint: InterfaceAccount<'info, Mint>,
     #[account(
         init,
         payer=author,
@@ -31,10 +32,11 @@ pub struct InitializePool<'info> {
         seeds=[b"SOL_VAULT",author.key().as_ref(),token_mint.key().as_ref()],
         bump
     )]
-    pub sol_vault:  SystemAccount<'info>,
+    pub sol_vault: SystemAccount<'info>,
+    pub token_mint: InterfaceAccount<'info, Mint>,
     pub associated_token_program: Program<'info, AssociatedToken>,
     pub token_program: Interface<'info, TokenInterface>,
-    pub system_program: Program<'info, System>
+    pub system_program: Program<'info, System>,
 }
 
 impl<'info> InitializePool<'info> {
@@ -45,7 +47,7 @@ impl<'info> InitializePool<'info> {
         end: i64,
         price: u64,
         bump: u8,
-        sol_vault_bump:u8
+        sol_vault_bump: u8,
     ) -> Result<()> {
         self.pool_account.init_pool(
             self.author.key(),
@@ -55,8 +57,7 @@ impl<'info> InitializePool<'info> {
             end,
             price,
             bump,
-            sol_vault_bump
+            sol_vault_bump,
         )
-
     }
 }

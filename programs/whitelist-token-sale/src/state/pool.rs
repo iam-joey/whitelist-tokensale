@@ -15,7 +15,7 @@ pub struct Pool {
     pub allow_to_buy: bool, //pool is allowed to buy
     pub sold_tokens: u64,   //total number of tokens bought from the allocation
     pub bump: u8,
-    pub sol_vault_bump:u8
+    pub sol_vault_bump: u8,
 }
 
 impl Pool {
@@ -28,7 +28,7 @@ impl Pool {
         end: i64,
         price: u64,
         bump: u8,
-        bump2:u8
+        bump2: u8,
     ) -> Result<()> {
         let clock = Clock::get()?;
         let time = clock.unix_timestamp;
@@ -42,8 +42,8 @@ impl Pool {
         self.price = price;
         self.allow_to_buy = false;
         self.bump = bump;
-        self.sol_vault_bump=bump2;
-        self.sold_tokens=0;
+        self.sol_vault_bump = bump2;
+        self.sold_tokens = 0;
         Ok(())
     }
 
@@ -61,7 +61,7 @@ impl Pool {
         self.allow_to_buy = true;
         Ok(())
     }
-    
+
     pub fn stop_pool(&mut self) -> Result<()> {
         // require!(!self.allow_to_buy, MyErrors::AlreadyInitialized);
         self.allow_to_buy = false;
@@ -72,5 +72,4 @@ impl Pool {
         self.sold_tokens = self.sold_tokens.checked_add(tokens).unwrap();
         Ok(())
     }
-    
 }

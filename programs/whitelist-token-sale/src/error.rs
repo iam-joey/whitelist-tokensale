@@ -25,5 +25,5 @@ pub enum MyErrors {
     #[msg("Pool is empty")]
     PoolEmpty,
     #[msg("Not enough tokens in the pool")]
-    InsufficientPoolBalance
+    InsufficientPoolBalance,
 }

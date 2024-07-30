@@ -22,7 +22,6 @@ pub use whitelist_user::*;
 pub mod buy_token;
 pub use buy_token::*;
 
-
 pub mod takeback_tokens;
 pub use takeback_tokens::*;
 

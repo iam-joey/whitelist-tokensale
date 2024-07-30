@@ -16,6 +16,7 @@ pub struct WhiteListUser<'info> {
         bump=user_account.bump
     )]
     pub user_account: Account<'info, User>,
+    /// CHECK : it's safe here we are not doing anything
     pub user: AccountInfo<'info>,
     #[account(
         mut,

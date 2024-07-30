@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_spl::{
     associated_token::AssociatedToken,
-    token_interface::{ Mint, TokenAccount, TokenInterface,CloseAccount,close_account},
+    token_interface::{close_account, CloseAccount, Mint, TokenAccount, TokenInterface},
 };
 
 #[allow(unused_doc_comments)]
@@ -40,12 +40,12 @@ pub struct DeletePool<'info> {
 impl<'info> DeletePool<'info> {
     pub fn delete_pool(&mut self) -> Result<()> {
         //close the vault account;
-        let accounts=CloseAccount{
-            account:self.vault.to_account_info(),
-            destination:self.author.to_account_info(),
-            authority:self.pool_account.to_account_info()
+        let accounts = CloseAccount {
+            account: self.vault.to_account_info(),
+            destination: self.author.to_account_info(),
+            authority: self.pool_account.to_account_info(),
         };
-        let context=CpiContext::new(self.token_program.to_account_info(), accounts);
+        let context = CpiContext::new(self.token_program.to_account_info(), accounts);
         close_account(context)
         // Ok(())
     }

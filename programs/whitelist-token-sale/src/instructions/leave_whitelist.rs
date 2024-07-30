@@ -23,6 +23,7 @@ pub struct LeaveWhiteList<'info> {
         bump=pool_account.bump
     )]
     pub pool_account: Account<'info, Pool>,
+    /// CHECK : it's safe here we are not doing anything
     pub author: AccountInfo<'info>,
     pub token_mint: InterfaceAccount<'info, Mint>,
 }
